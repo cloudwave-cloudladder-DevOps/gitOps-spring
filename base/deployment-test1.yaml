@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  spring-order
+  labels:
+    app:  spring-order
+spec:
+  selector:
+    matchLabels:
+      app: spring-order
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app:  spring-order
+    spec:
+      initContainers:
+        - name: check-mysql-ready
+          image: mysql:8.0
+          env:
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: spring-order-db-secret
+                  key: MYSQL_PASSWORD
+          command: ['sh',
+            '-c',
+            'until mysqladmin ping -u admin -p${MYSQL_PASSWORD} -h dev-cloudladder-mysql-orders.cbmq2qk2uqly.ap-northeast-2.rds.amazonaws.com
+; do echo waiting for database; sleep 2; done;']
+      containers:
+        - name:  spring-order
+          image:  739306822356.dkr.ecr.ap-northeast-2.amazonaws.com/test:2a1f782d82ca1a6d9239c955b2eba657f0e753aa
+          envFrom:
+            - configMapRef:
+                name: spring-order-app-config
+          env:
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: spring-order-db-secret
+                  key: MYSQL_PASSWORD
+            - name: spring.datasource.username
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-order-db-config
+                  key: MYSQL_USER
+          resources:
+            requests:
+              cpu: 300m
+              memory: 500Mi
+            limits:
+              cpu: 400m
+              memory: 600Mi
+          readinessProbe:
+            httpGet:
+              path: /actuator
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+            successThreshold: 2
+            failureThreshold: 3
+            periodSeconds: 10
+          ports:
+            - containerPort:  3306
+              name:  order
+      volumes:
+        - name: application-config
+          configMap:
+            name: spring-order-app-config
+      restartPolicy: Always
