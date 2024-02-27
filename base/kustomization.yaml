@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
   - deployment-test1.yaml
-  - configmap-db.yaml
-  - configmap-app.yaml
   - secret.yaml
   - service.yaml
+  - configmap-db.yaml
