@@ -4,3 +4,9 @@ kind: Kustomization
 resources:
   - ../../base
   - configmap-app.yaml
+
+images:
+- name: 611155787285.dkr.ecr.ap-northeast-2.amazonaws.com/java_cloudladder
+  newName: 611155787285.dkr.ecr.ap-northeast-2.amazonaws.com/java_cloudladder
+  newTag: 263d7afc143aa719debaf5608de8ba70bcdd46ef
+
