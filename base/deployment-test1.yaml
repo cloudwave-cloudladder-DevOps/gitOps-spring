@@ -14,19 +14,6 @@ spec:
       labels:
         app:  spring-order
     spec:
-      initContainers:
-        - name: check-mysql-ready
-          image: mysql:8.0
-          env:
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: spring-order-db-secret
-                  key: MYSQL_PASSWORD
-          command: ['sh',
-            '-c',
-            'until mysqladmin ping -u admin -p${MYSQL_PASSWORD} -h dev-cloudladder-mysql-orders.cbmq2qk2uqly.ap-northeast-2.rds.amazonaws.com
-; do echo waiting for database; sleep 2; done;']
       containers:
         - name:  spring-order
           image:  611155787285.dkr.ecr.ap-northeast-2.amazonaws.com/java_cloudladder:2b0dc779b13262dd9f631e9dc5826a5afc065442
