@@ -2,5 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../base
-  - configmap-app.yaml
+- ../../base
+- configmap-app.yaml
+images:
+- name: 611155787285.dkr.ecr.ap-northeast-2.amazonaws.com/java_cloudladder
+  newName: 611155787285.dkr.ecr.ap-northeast-2.amazonaws.com/java_cloudladder
+  newTag: c94aeb5564bc49a50e5e81f88b59012e558103a0
