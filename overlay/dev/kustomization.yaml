@@ -8,4 +8,4 @@ resources:
 images:
 - name: 611155787285.dkr.ecr.ap-northeast-2.amazonaws.com/java_cloudladder
   newName: 611155787285.dkr.ecr.ap-northeast-2.amazonaws.com/java_cloudladder
-  newTag: c94aeb5564bc49a50e5e81f88b59012e558103a0
+  newTag: 1d4aafe2857fafc1ce8af62462df1259b5f248e7
